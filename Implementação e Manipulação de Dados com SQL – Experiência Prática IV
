@@ -1,0 +1,102 @@
+-- ===========================================
+-- SCRIPT COMPLETO – EXPERIÊNCIA PRÁTICA IV
+-- Implementação e Manipulação de Dados em SQL
+-- ===========================================
+
+-- Criando banco de dados e tabelas
+CREATE DATABASE IF NOT EXISTS ep4;
+USE ep4;
+
+-- Tabela Cliente
+CREATE TABLE IF NOT EXISTS Cliente (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(20)
+);
+
+-- Tabela Pedido
+CREATE TABLE IF NOT EXISTS Pedido (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    data_pedido DATE,
+    valor_total DECIMAL(10,2),
+    cliente_id INT,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+);
+
+-- ===========================================
+-- INSERTS
+-- ===========================================
+
+INSERT INTO Cliente (nome, email, telefone) VALUES
+('Ana Souza', 'ana@gmail.com', '11999990000'),
+('Bruno Lima', 'bruno@gmail.com', '11988887777'),
+('Carlos Alberto', 'carlos@gmail.com', '11977776666');
+
+INSERT INTO Pedido (data_pedido, valor_total, cliente_id) VALUES
+('2024-11-01', 150.00, 1),
+('2024-11-05', 230.50, 1),
+('2024-11-02', 99.90, 2),
+('2024-11-10', 320.00, 3);
+
+-- ===========================================
+-- SELECTS
+-- ===========================================
+
+-- 1) Seleciona todos os clientes
+SELECT * FROM Cliente;
+
+-- 2) Pedidos acima de R$150 ordenados por valor
+SELECT * FROM Pedido
+WHERE valor_total > 150
+ORDER BY valor_total DESC;
+
+-- 3) Apenas 2 primeiros pedidos
+SELECT * FROM Pedido
+ORDER BY id
+LIMIT 2;
+
+-- 4) JOIN – Mostrar nome do cliente + pedido
+SELECT 
+    Cliente.nome,
+    Pedido.data_pedido,
+    Pedido.valor_total
+FROM Pedido
+JOIN Cliente ON Pedido.cliente_id = Cliente.id;
+
+-- ===========================================
+-- UPDATES
+-- ===========================================
+
+-- Atualiza telefone do cliente 1
+UPDATE Cliente
+SET telefone = '11911112222'
+WHERE id = 1;
+
+-- Atualiza valor do pedido 1
+UPDATE Pedido
+SET valor_total = 180.00
+WHERE id = 1;
+
+-- Atualiza nome do cliente 1
+UPDATE Cliente
+SET nome = 'Ana Souza Silva'
+WHERE id = 1;
+
+-- ===========================================
+-- DELETES
+-- ===========================================
+
+-- Exclui um pedido específico
+DELETE FROM Pedido
+WHERE id = 4;
+
+-- Exclui um cliente sem pedidos
+DELETE FROM Cliente
+WHERE id = 3;
+
+-- Exclui pedidos com valor abaixo de 100
+DELETE FROM Pedido
+WHERE valor_total < 100;
+
+-- FIM DO SCRIPT
